@@ -1,0 +1,17 @@
+version: '3'
+services:
+  back_app:
+    depends_on:
+      - db
+    restart: always
+    build: .
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/usr/src/app
+
+  db:
+    image: mongo
+    container_name: db_mongo
+    ports:
+      - '27017:27017'
