@@ -1,6 +1,7 @@
-import { Controller, Post, Request, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LocalAuthGuard } from './local-auth.guard';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
+import { LocalAuthGuard } from '../common/guards/local-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -14,6 +15,13 @@ export class AuthController {
     ? based on the value we return from the validate() method, 
     ? and assigns it to the Request object as req.user
     */
-    return this.authService.login(req.user);
+    return this.authService.login(req.user, req.session);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('test')
+  getTest(@Request() req) {
+    console.log(req.session.jwt);
+    return req.user;
   }
 }

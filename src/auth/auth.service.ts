@@ -24,13 +24,13 @@ export class AuthService {
     return user;
   }
 
-  async login(user) {
+  async login(user, session) {
     const payload = { username: user.username, sub: user._id };
 
-    // TODO: Set the token to the cookie as httpOnly
+    const userJwt = this.jwtService.sign(payload);
+    session.jwt = userJwt;
+    console.log(session.jwt);
 
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
+    return user;
   }
 }
