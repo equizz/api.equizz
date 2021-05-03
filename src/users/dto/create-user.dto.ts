@@ -5,7 +5,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { Role } from 'src/schemas/enums/user.enum';
+import { Role } from 'src/enums/user.enum';
 
 export class CreateUserDto {
   @IsEmail()
