@@ -4,12 +4,12 @@ import { Model } from 'mongoose';
 import { User, UserDocument } from 'src/schemas/user.schema';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { JWT } from './interfaces/jwt-payload.interface';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
-    private readonly jwtService: JwtService,
   ) {}
 
   async validateUser(username: string, pass: string) {
@@ -24,13 +24,7 @@ export class AuthService {
     return user;
   }
 
-  async login(user, session) {
-    const payload = { username: user.username, sub: user._id };
-
-    const userJwt = this.jwtService.sign(payload);
-    session.jwt = userJwt;
-    console.log(session.jwt);
-
-    return user;
+  async login(user): Promise<JWT> {
+    return { username: user.username, userId: user._id, role: user.role };
   }
 }
