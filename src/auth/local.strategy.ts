@@ -23,6 +23,8 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
   */
 
   async validate(username: string, password: string) {
+    // ? Passport will build a user object(`req.user`) based on the return value of our validate() method
+
     const user = await this.authService.validateUser(username, password);
 
     return user;
