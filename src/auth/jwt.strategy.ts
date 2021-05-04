@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { ExtractJwt, Strategy } from 'passport-jwt';
+import { Strategy } from 'passport-jwt';
+import { sessionExtractor } from 'src/common/helpers/session.helper';
 import { JWT } from './interfaces/jwt-payload.interface';
 
 @Injectable()
@@ -22,11 +23,3 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     };
   }
 }
-
-const sessionExtractor = (req): string => {
-  let jwt = null;
-  if (req && req.session) {
-    jwt = req.session.jwt;
-  }
-  return jwt;
-};
