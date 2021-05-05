@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-jwt';
 import { sessionExtractor } from 'src/common/helpers/session.helper';
+import { JwtConfig } from 'src/common/interfaces/jwtconfig.interface';
 import { JWT } from './interfaces/jwt-payload.interface';
 
 @Injectable()
@@ -11,7 +12,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: sessionExtractor,
       ignoreExpiration: false,
-      secretOrKey: configService.get('JWT_KEY'),
+      secretOrKey: configService.get<JwtConfig>('JWT_KEY'),
     });
   }
 
