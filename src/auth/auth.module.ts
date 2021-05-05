@@ -7,14 +7,14 @@ import { LocalStrategy } from './local.strategy';
 import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './jwt.strategy';
+import { JwtConfigService } from 'src/providers/jwt/provider.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     PassportModule,
-    JwtModule.register({
-      secret: 'asd',
-      signOptions: { expiresIn: '60s' },
+    JwtModule.registerAsync({
+      useClass: JwtConfigService,
     }),
   ],
   providers: [AuthService, LocalStrategy, JwtStrategy],
