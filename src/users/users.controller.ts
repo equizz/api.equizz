@@ -14,7 +14,6 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
-import * as bcrypt from 'bcrypt';
 import { Role } from 'src/enums/user.enum';
 
 @Controller('users')
@@ -34,9 +33,14 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
-  async findAll() {
-    console.log(await bcrypt.hash('bodoh', 12));
+  async findAll(@Request() req) {
+    const { role } = req.user;
+
+    if (role === Role.Guru || role === Role.Siswa)
+      return this.usersService.findAll([Role.Siswa, Role.Guru]);
+
     return this.usersService.findAll();
   }
 

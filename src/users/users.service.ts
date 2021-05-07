@@ -29,8 +29,10 @@ export class UsersService {
     return createdUser.save();
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll(role?): Promise<User[]> {
+    if (role) return this.userModel.find({ role: { $in: role } });
+
+    return this.userModel.find();
   }
 
   async findOne(username: string): Promise<User> {
