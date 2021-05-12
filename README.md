@@ -22,52 +22,77 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
+## **Login**
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Returns session cookie and jwt to the session.
 
-## Installation
+- **URL**
 
-```bash
-$ npm install
-```
+  /auth/login
 
-## Running the app
+- **Method:**
 
-```bash
-# development
-$ npm run start
+  `POST`
 
-# watch mode
-$ npm run start:dev
+- **URL Params**
 
-# production mode
-$ npm run start:prod
-```
+  None
 
-## Test
+- **Data Params**
 
-```bash
-# unit tests
-$ npm run test
+  ```
+    {
+      username: [string],
+      password: [string]
+    }
+  ```
 
-# e2e tests
-$ npm run test:e2e
+- **Success Response:**
 
-# test coverage
-$ npm run test:cov
-```
+  - **Code:** 200 <br />
+    **Content:**
+    ```
+    {
+      username: [string],
+      userId: [string],
+      role: [string]
+    }
+    ```
 
-## Support
+- **Error Response:**
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+  - **Code:** 400 BAD REQUEST <br />
+    **Content:**
+    ```
+    {
+      statusCode: 400,
+      message: "Invalid credentials",
+      error: "Bad Request"
+    }
+    ```
 
-## Stay in touch
+  OR
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+  - **Code:** 401 UNAUTHORIZED <br />
+    **Content:** `{ statusCode: 401, message: "Unauthorized" }`
 
-## License
+- **Sample Call:**
 
-Nest is [MIT licensed](LICENSE).
+  ```javascript
+  $.ajax({
+    url: '/auth/login',
+    dataType: 'json',
+    type: 'POST',
+    data: {
+      username: 'pram',
+      password: 'pramsworld',
+    },
+    success: function (r) {
+      console.log(r);
+    },
+  });
+  ```
+
+- **Notes:**
+
+  Will update soon
