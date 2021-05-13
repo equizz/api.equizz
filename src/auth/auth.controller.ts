@@ -11,6 +11,7 @@ import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import { LocalAuthGuard } from '../common/guards/local-auth.guard';
 import { JwtService } from '@nestjs/jwt';
 import { JWT } from './interfaces/jwt-payload.interface';
+import { ApiBody } from '@nestjs/swagger';
 
 @Controller('auth')
 export class AuthController {
@@ -22,6 +23,15 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   @HttpCode(200)
+  @ApiBody({
+    schema: {
+      properties: {
+        username: { type: 'string' },
+        password: { type: 'string' },
+      },
+      required: ['username', 'password'],
+    },
+  })
   async login(@Request() req): Promise<JWT> {
     /*
     ? Passport automatically creates a user object, 
