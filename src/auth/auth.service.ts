@@ -16,9 +16,7 @@ export class AuthService {
 
     const passwordsMatch = await bcrypt.compare(pass, user.password);
 
-    if (!passwordsMatch) return false; // ? return false because i handled error in local-auth-guard.ts
-
-    return user;
+    if (passwordsMatch) return user;
   }
 
   async login(user): Promise<JWT> {
