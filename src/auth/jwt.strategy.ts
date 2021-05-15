@@ -4,7 +4,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-jwt';
 import { sessionExtractor } from 'src/common/helpers/session.helper';
 import { JwtConfig } from 'src/common/interfaces/jwtconfig.interface';
-import { JWT } from './interfaces/jwt-payload.interface';
+import { IUser } from 'src/common/interfaces/user.interface';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -16,10 +16,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload): Promise<JWT> {
+  async validate(payload): Promise<IUser> {
     // ? Passport will build a user object(`req.user`) based on the return value of our validate() method
     return {
-      userId: payload.userId,
+      userId: payload.sub,
       username: payload.username,
       role: payload.role,
     };

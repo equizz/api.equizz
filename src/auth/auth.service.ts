@@ -20,6 +20,6 @@ export class AuthService {
   }
 
   async login(user): Promise<JWT> {
-    return { username: user.username, userId: user._id, role: user.role };
+    return { username: user.username, sub: user._id, role: user.role };
   }
 }

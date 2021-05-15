@@ -1,7 +1,7 @@
 import { Role } from 'src/enums/user.enum';
 
 export interface JWT {
-  userId: string;
+  sub: string;
   username: string;
   role: Role;
 }
