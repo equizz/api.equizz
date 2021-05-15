@@ -44,18 +44,35 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':username')
-  findOne(@Param('username') username: string) {
+  async findOne(@Param('username') username: string, @Request() req) {
+    const { role } = req.user;
+
+    if (role === Role.Guru || role === Role.Siswa) {
+      return this.usersService.findOne(username, [Role.Siswa, Role.Guru]);
+    }
+
     return this.usersService.findOne(username);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+  @UseGuards(JwtAuthGuard)
+  @Patch(':username')
+  update(
+    @Param('username') username: string,
+    @Body() updateUserDto: UpdateUserDto,
+    @Request() req,
+  ) {
+    return this.usersService.update(username, updateUserDto, req.user);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  @UseGuards(JwtAuthGuard)
+  @Delete(':username')
+  remove(@Param('username') username: string, @Request() req) {
+    const { role } = req.user;
+
+    if (role !== Role.Admin) throw new UnauthorizedException();
+
+    return this.usersService.remove(username);
   }
 }
